@@ -122,6 +122,47 @@ export default function App() {
       font-family: 'Gaya', Arial, sans-serif;
     }
     
+    /* Desktop Only - Block mobile/tablet access */
+    .desktop-only-blocker {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #000;
+      color: white;
+      z-index: 99999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 40px;
+    }
+    
+    .desktop-only-blocker h1 {
+      font-size: 48px !important;
+      margin-bottom: 20px !important;
+      font-family: 'Gaya', Arial, sans-serif !important;
+    }
+    
+    .desktop-only-blocker p {
+      font-size: 24px !important;
+      margin-bottom: 10px !important;
+      font-family: 'Gaya', Arial, sans-serif !important;
+    }
+    
+    /* Show blocker on screens smaller than desktop (1024px) */
+    @media (max-width: 1023px) {
+      .desktop-only-blocker {
+        display: flex !important;
+      }
+      
+      .main-content {
+        display: none !important;
+      }
+    }
+    
     /* Hide LOOMA text and replace with RRR */
     [data-framer-component-type="Text"]:has-text("LOOMA"),
     .framer-text:contains("LOOMA"),
@@ -308,7 +349,19 @@ export default function App() {
   return (
     <>
       <style>{globalStyles}</style>
-      <div style={{ 
+      
+      {/* Desktop Only Blocker */}
+      <div className="desktop-only-blocker">
+        <h1>RRR</h1>
+        <p>🖥️ DESKTOP ONLY</p>
+        <p>This site is optimized for desktop viewing.</p>
+        <p>Please visit us on a computer or laptop.</p>
+        <br />
+        <p style={{ fontSize: '18px', opacity: '0.8' }}>For inquiries: RATROCKREPAIR@GMAIL.COM</p>
+      </div>
+      
+      {/* Main Content - Hidden on mobile/tablet */}
+      <div className="main-content" style={{ 
         backgroundColor: '#000', 
         minHeight: '100vh',
         width: '100vw',
