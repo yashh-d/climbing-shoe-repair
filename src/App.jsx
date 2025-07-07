@@ -44,12 +44,51 @@ export default function App() {
       }
     }
 
+    // Function to replace LOOMA with RRR
+    const replaceLoomaText = () => {
+      // Find all text elements that might contain LOOMA
+      const textElements = document.querySelectorAll('*')
+      textElements.forEach(element => {
+        // Check if element contains LOOMA text
+        if (element.childNodes) {
+          element.childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE && node.textContent.includes('LOOMA')) {
+              node.textContent = node.textContent.replace(/LOOMA/g, 'RRR')
+            }
+          })
+        }
+        
+        // Also check direct text content
+        if (element.textContent && element.textContent.trim() === 'LOOMA') {
+          element.textContent = 'RRR'
+        }
+      })
+    }
+
+    // Replace text immediately and also set up observer for dynamic content
+    const observer = new MutationObserver(() => {
+      replaceLoomaText()
+    })
+
+    // Start observing
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    })
+
+    // Replace text initially after a short delay to let Framer components load
+    setTimeout(replaceLoomaText, 100)
+    setTimeout(replaceLoomaText, 500)
+    setTimeout(replaceLoomaText, 1000)
+
     // Add event listener to capture all clicks
     document.addEventListener('click', handleNavigation)
     
     // Cleanup
     return () => {
       document.removeEventListener('click', handleNavigation)
+      observer.disconnect()
     }
   }, [])
 
@@ -81,6 +120,46 @@ export default function App() {
       padding: 0;
       height: 100vh;
       font-family: 'Gaya', Arial, sans-serif;
+    }
+    
+    /* Hide LOOMA text and replace with RRR */
+    [data-framer-component-type="Text"]:has-text("LOOMA"),
+    .framer-text:contains("LOOMA"),
+    .framer-Text:contains("LOOMA") {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+    }
+    
+    /* Add RRR logo text to navbar */
+    .framer-navbar::before,
+    [data-framer-component-type*="navbar"]::before,
+    [data-framer-name*="navbar"]::before {
+      content: "RRR" !important;
+      position: absolute !important;
+      top: 50% !important;
+      left: 20px !important;
+      transform: translateY(-50%) !important;
+      font-family: 'Gaya', Arial, sans-serif !important;
+      font-size: 24px !important;
+      font-weight: bold !important;
+      color: white !important;
+      z-index: 1000 !important;
+    }
+    
+    /* Alternative approach - target the navbar container */
+    nav::before,
+    header::before {
+      content: "RRR" !important;
+      position: absolute !important;
+      top: 50% !important;
+      left: 20px !important;
+      transform: translateY(-50%) !important;
+      font-family: 'Gaya', Arial, sans-serif !important;
+      font-size: 24px !important;
+      font-weight: bold !important;
+      color: white !important;
+      z-index: 1000 !important;
     }
     
     /* Make FAQ content larger */
